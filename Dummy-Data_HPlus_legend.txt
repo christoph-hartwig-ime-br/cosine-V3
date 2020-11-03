@@ -1,0 +1,8 @@
+group 1	cornflowerblue
+group 2	darkgoldenrod
+	white
+Strain-A	yellow
+Strain-B	brown1
+Strain-D	brown4
+Strain-E	blueviolet
+Strain-F	darkcyan
