@@ -1,4 +1,4 @@
-# Version 3.0
+# Version 3.0.1 
 # Written 2020 by Dipl.-Ing.(FH) Christoph Hartwig (Fraunhofer IME-BR)
 # Based on first implementation of the workflow by Dr. Florian Zubeil (Fraunhofer IME-BR) in 2017.
 #
@@ -8,6 +8,7 @@
 # V 2.0 2019 Christoph Hartwig (Fraunhofer IME-BR) - https://dx.doi.org/10.5281/zenodo.3932968 - https://github.com/christoph-hartwig-ime-br/cosine-V2
 #   Moving all calculations to R-packets - including export of results
 # V 3.0 2020 Christoph Hartwig (Fraunhofer IME-BR) -  modularisation of the code, implementing the import of flags and legend from files and including multiple sidebars to heatmap 
+# V 3.0.1 2020 Christoph Hartwig (Fraunhofer IME-BR) - adaptation of layout, addition of density information. 
 #
 # Data Processing is handled in DataAnalysis (Bruker) for feature finding [Reprocessed files are stored and can be used for future bucketings, so that reprocessig is necessary only once]
 # Bucketing is done via ProfileAnalysis (Bruker) and that output file "XYZ_HPlus.txt" is the input for this script [ProfileAnalysis allows huge sample numbers, only limited by memory.]
@@ -90,6 +91,12 @@ calcall<-function(project){
   heatsvg<-function(input, graphname){
     my_palette <- colorRampPalette(c("white","blue"), bias=10)(n = 500) # color scheme for heatmap
     svg(filename=paste(c(project,graphname), collapse=""), width= 21, height =20, pointsize =point, onefile =FALSE, family="sans", bg="white", c("default", "none", "gray", "subpixel"))
+   # png(filename=paste(c(project,graphname), collapse=""),    # create PNG for the heat map        
+    #    width = 50*400,       
+     #   height = 50*400,
+      #  res = 1000,           
+       # pointsize = 5)        # small font size accomodating for large sample numbers
+    
     graph<-heatmap.3(input, symm=TRUE, distfun=function(x) as.dist((1-x)/2), notecol="black", # as.dist((1-x)/2) inverts similarity to dissimilarity
                      #main = paste(c(project,graphname), collapse=""), # heat map title if wanted
                      col=my_palette,
@@ -98,8 +105,10 @@ calcall<-function(project){
                      dendrogram = "both",
                      Rowv=TRUE, Colv=TRUE,
                      margins =c(0,0),     # leaves no room for filenames making plot more tidy
-                     density.info = "none",
-                     key= FALSE,
+                     density.info = "histogram",
+                     key= TRUE,
+                     KeyValueName="cosine similarity value",
+                     
                      ColSideColors=clab, 
                      RowSideColors=rlab,
                      cexRow=5,
@@ -108,9 +117,9 @@ calcall<-function(project){
                      RowSideColorsSize=3, 
                      trace="none")
     
-    legend("topleft",legend=as.character(as.matrix(table.legend[,1])),
+    legend(-.01,.81 ,legend=as.character(as.matrix(table.legend[,1])),
            fill=as.character(as.matrix(table.legend[,2])), 
-           border=FALSE, bty="n", y.intersp = spacing, cex=size)
+           border=TRUE, bty="n", y.intersp = spacing, cex=size)
     dev.off()
     clusttable<<-rev(graph$rowInd)  
   }    
@@ -162,7 +171,7 @@ calcall<-function(project){
 
 # Parameters for legend
 spacing<<-1 # y.interspace
-size<<-0.55 # cex
+size<<-0.75 # cex
 point<<-22 # pointsize for Heatmap
 
 setwd("E:/") # Working directory
