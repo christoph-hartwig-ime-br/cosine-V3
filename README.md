@@ -3,6 +3,7 @@
 **The code is tested under R 3.6 and 4.0**
 
 Version 3.0.0: [![DOI](https://zenodo.org/badge/309619030.svg)](https://zenodo.org/badge/latestdoi/309619030)
+
 Version 3.0.1: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4320539.svg)](https://doi.org/10.5281/zenodo.4320539)
 
 
